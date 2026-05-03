@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 
 export default function Home() {
@@ -7,10 +8,16 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   const analyze = async () => {
-    let fixedUrl = url;
+    setResult(null);
 
-    // מוסיף https אם אין
-    if (!fixedUrl.startsWith('http')) {
+    let fixedUrl = url.trim();
+
+    if (!fixedUrl) {
+      alert('Please enter a website URL');
+      return;
+    }
+
+    if (!fixedUrl.startsWith('http://') && !fixedUrl.startsWith('https://')) {
       fixedUrl = 'https://' + fixedUrl;
     }
 
@@ -19,47 +26,58 @@ export default function Home() {
 
       const res = await fetch('/api/analyze', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({ url: fixedUrl }),
       });
 
       const data = await res.json();
 
-      if (data.error) {
-        alert(data.error);
-      } else {
-        setResult(data);
+      if (!res.ok || data.error) {
+        alert(data.error || 'Error analyzing site');
+        return;
       }
 
+      setResult(data);
     } catch (e) {
-      alert('Error analyzing site');
+      alert('Request failed. Check Vercel logs.');
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
-    <div style={{padding:40, fontFamily:'Arial'}}>
+    <div style={{ padding: 40, fontFamily: 'Arial' }}>
       <h1>Analyze Your Website</h1>
 
       <input
         placeholder="Enter your website"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
-        style={{padding:10, width:'300px'}}
+        style={{ padding: 10, width: '320px' }}
       />
 
-      <button onClick={analyze} style={{marginLeft:10, padding:10}}>
+      <button
+        onClick={analyze}
+        disabled={loading}
+        style={{ marginLeft: 10, padding: 10 }}
+      >
         {loading ? 'Analyzing...' : 'Analyze'}
       </button>
 
       {result && (
-        <div style={{marginTop:30}}>
+        <div style={{ marginTop: 30 }}>
           <h3>Results:</h3>
           <p>Performance: {result.performance}</p>
           <p>SEO: {result.seo}</p>
+          <p>Accessibility: {result.accessibility}</p>
+          <p>Best Practices: {result.bestPractices}</p>
 
           <a
-            href={`https://wa.me/972XXXXXXXXX?text=I analyzed ${url}`}
+            href={`https://wa.me/972XXXXXXXXX?text=I analyzed ${encodeURIComponent(
+              fixedUrl
+            )}`}
             target="_blank"
           >
             👉 Get Full Fix on WhatsApp
