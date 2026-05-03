@@ -7,13 +7,33 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   const analyze = async () => {
-    setLoading(true);
-    const res = await fetch('/api/analyze', {
-      method: 'POST',
-      body: JSON.stringify({ url }),
-    });
-    const data = await res.json();
-    setResult(data);
+    let fixedUrl = url;
+
+    // מוסיף https אם אין
+    if (!fixedUrl.startsWith('http')) {
+      fixedUrl = 'https://' + fixedUrl;
+    }
+
+    try {
+      setLoading(true);
+
+      const res = await fetch('/api/analyze', {
+        method: 'POST',
+        body: JSON.stringify({ url: fixedUrl }),
+      });
+
+      const data = await res.json();
+
+      if (data.error) {
+        alert(data.error);
+      } else {
+        setResult(data);
+      }
+
+    } catch (e) {
+      alert('Error analyzing site');
+    }
+
     setLoading(false);
   };
 
