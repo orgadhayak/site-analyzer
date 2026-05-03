@@ -75,13 +75,11 @@ export default function Home() {
           <p>Best Practices: {result.bestPractices}</p>
 
           <a
-            href={`https://wa.me/972XXXXXXXXX?text=I analyzed ${encodeURIComponent(
-              fixedUrl
-            )}`}
-            target="_blank"
-          >
-            👉 Get Full Fix on WhatsApp
-          </a>
+  href={`https://wa.me/972548180200?text=I analyzed ${encodeURIComponent(url)}`}
+  target="_blank"
+>
+  👉 Get Full Fix on WhatsApp
+</a>
         </div>
       )}
     </div>
