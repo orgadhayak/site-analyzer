@@ -24,12 +24,14 @@ export default function Home() {
 
     try {
       setLoading(true);
-      setStep('Connecting to Google Lighthouse...');
+      setStep('Navines is starting a real website audit...');
 
-      setTimeout(() => setStep('Running mobile performance test...'), 4000);
-      setTimeout(() => setStep('Checking SEO, accessibility and best practices...'), 10000);
-      setTimeout(() => setStep('Generating your website audit report...'), 18000);
-      setTimeout(() => setStep('Almost done. Real audits can take up to 60 seconds...'), 30000);
+      setTimeout(() => setStep('Connecting to Google Lighthouse for a trusted performance scan...'), 3500);
+      setTimeout(() => setStep('Checking mobile speed, SEO, accessibility and best practices...'), 8000);
+      setTimeout(() => setStep('Building a clearer picture of your website health...'), 14000);
+      setTimeout(() => setStep('Looking for issues that may affect conversions, trust and rankings...'), 21000);
+      setTimeout(() => setStep('Almost there — real audits take time because we scan the live page...'), 32000);
+      setTimeout(() => setStep('Preparing your Navines audit summary...'), 45000);
 
       const res = await fetch('/api/analyze', {
         method: 'POST',
@@ -59,6 +61,23 @@ export default function Home() {
     return '#dc2626';
   };
 
+  const contactText = encodeURIComponent(
+    `Hi Navines, I analyzed my website: ${url}. Please send me a full optimization plan.`
+  );
+
+  const emailSubject = encodeURIComponent('Website Optimization Plan Request');
+  const emailBody = encodeURIComponent(
+    `Hi Navines,
+
+I used the website analyzer and would like to receive a full optimization plan.
+
+Website: ${url}
+
+Please send me recommendations for improving speed, SEO, accessibility and conversions.
+
+Thank you.`
+  );
+
   return (
     <main style={{
       minHeight: '100vh',
@@ -68,17 +87,23 @@ export default function Home() {
       padding: 30
     }}>
       <div style={{
-        maxWidth: 850,
+        maxWidth: 900,
         margin: '0 auto',
         padding: 35,
         borderRadius: 20,
         background: 'rgba(255,255,255,0.06)',
         border: '1px solid rgba(255,255,255,0.12)'
       }}>
-        <h1 style={{ fontSize: 42, marginBottom: 10 }}>Analyze Your Website</h1>
+        <p style={{ color: '#22c55e', fontWeight: 'bold' }}>
+          Navines Website Intelligence
+        </p>
+
+        <h1 style={{ fontSize: 42, marginBottom: 10 }}>
+          Analyze Your Website
+        </h1>
 
         <p style={{ color: '#cbd5e1', fontSize: 17 }}>
-          Get a real Google Lighthouse audit for performance, SEO, accessibility and best practices.
+          Run a real audit and get a clear view of your site speed, SEO, accessibility and technical quality.
         </p>
 
         <div style={{ display: 'flex', gap: 10, marginTop: 25, flexWrap: 'wrap' }}>
@@ -131,16 +156,18 @@ export default function Home() {
               animation: 'spin 1s linear infinite',
               marginBottom: 15
             }} />
+
             <strong>{step}</strong>
+
             <p style={{ color: '#cbd5e1', marginBottom: 0 }}>
-              Please keep this page open. A real audit may take 20–60 seconds.
+              Please keep this page open. A real live audit may take 20–60 seconds.
             </p>
           </div>
         )}
 
         {result && (
           <div style={{ marginTop: 35 }}>
-            <h2>Your Audit Results</h2>
+            <h2>Your Navines Audit Results</h2>
 
             <div style={{
               display: 'grid',
@@ -179,30 +206,45 @@ export default function Home() {
               borderRadius: 15,
               background: 'rgba(255,255,255,0.06)'
             }}>
-              <h3>What this means</h3>
+              <h3>Want the full fix plan?</h3>
+
               <p style={{ color: '#cbd5e1' }}>
-                Low performance can reduce conversions, rankings and user trust.
-                We can review the full report and send you a clear fix plan.
+                Navines can review the full audit and send you a clear action plan for speed,
+                SEO, accessibility and conversion improvements.
               </p>
 
-              <a
-                href={`https://wa.me/972548180200?text=${encodeURIComponent(
-                  `Hi, I analyzed my website: ${url}. Please send me a full optimization plan.`
-                )}`}
-                target="_blank"
-                style={{
-                  display: 'inline-block',
-                  marginTop: 10,
-                  padding: '14px 22px',
-                  borderRadius: 10,
-                  background: '#22c55e',
-                  color: 'white',
-                  textDecoration: 'none',
-                  fontWeight: 'bold'
-                }}
-              >
-                Get Full Fix on WhatsApp
-              </a>
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 15 }}>
+                <a
+                  href={`https://wa.me/972548180200?text=${contactText}`}
+                  target="_blank"
+                  style={{
+                    display: 'inline-block',
+                    padding: '14px 22px',
+                    borderRadius: 10,
+                    background: '#22c55e',
+                    color: 'white',
+                    textDecoration: 'none',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  Contact on WhatsApp
+                </a>
+
+                <a
+                  href={`mailto:hello@navines.com?subject=${emailSubject}&body=${emailBody}`}
+                  style={{
+                    display: 'inline-block',
+                    padding: '14px 22px',
+                    borderRadius: 10,
+                    background: '#2563eb',
+                    color: 'white',
+                    textDecoration: 'none',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  Send by Email
+                </a>
+              </div>
             </div>
           </div>
         )}
